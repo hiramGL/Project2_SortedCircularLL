@@ -117,23 +117,15 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
 	@Override
 	public int removeAll(E obj) {
-		ForwardNodeIterator iter = new ForwardNodeIterator();
-		Node<E> current;
-		int occurences = 0;
-		while(iter.hasNext()) {
-			current = iter.next();
-			if(current.getData().compareTo(obj)== 0) {
-				Node<E> nbc = current.getPrev();
-				nbc.setNext(current.getNext());
-				current.getNext().setPrev(nbc);
-				current.clearNode();
-				currentSize--;
-				occurences++;
-			}
-			
-		}
+		int occurrences = 0;
+		Node<E> ntr = getNode(obj);
 		
-		return occurences;
+		while(ntr != null) {
+			remove(ntr);
+			occurrences++;
+			ntr = getNode(obj);
+		}
+		return occurrences;
 	}
 
 	@Override
