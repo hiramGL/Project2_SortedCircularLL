@@ -100,20 +100,64 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
 	@Override
 	public boolean remove(E obj) {
-		// TODO Not implemented.
+		ForwardNodeIterator iter = new ForwardNodeIterator();
+		Node<E> current;
+	
+		while(iter.hasNext()) {
+			current = iter.next();
+			if(current.getData().compareTo(obj)== 0) {
+				Node<E> nbc = current.getPrev();
+				nbc.setNext(current.getNext());
+				current.getNext().setPrev(nbc);
+				current.clearNode();
+				currentSize--;
+				return true;
+			}
+			
+		}
 		return false;
 	}
 
 	@Override
 	public boolean remove(int index) {
 		// TODO Not implemented.
-		return false;
+		if(index < 0 || index >= size())
+			throw new IndexOutOfBoundsException("index out of bounds");
+		int in = 0;
+		ForwardNodeIterator iter = new ForwardNodeIterator();
+		Node<E> current = iter.next();
+		while(in < index) {
+			current = iter.next();
+			in++;
+		}
+		Node<E> ndc = current.getPrev();
+		ndc.setNext(current.getNext());
+		current.getNext().setPrev(ndc);
+		current.clearNode();
+		currentSize--;
+		
+		return true;
 	}
 
 	@Override
 	public int removeAll(E obj) {
-		// TODO Not implemented.
-		return 0;
+		ForwardNodeIterator iter = new ForwardNodeIterator();
+		Node<E> current;
+		int occurences = 0;
+		while(iter.hasNext()) {
+			current = iter.next();
+			if(current.getData().compareTo(obj)== 0) {
+				Node<E> nbc = current.getPrev();
+				nbc.setNext(current.getNext());
+				current.getNext().setPrev(nbc);
+				current.clearNode();
+				currentSize--;
+				occurences++;
+			}
+			
+		}
+		
+		return occurences;
 	}
 
 	@Override
