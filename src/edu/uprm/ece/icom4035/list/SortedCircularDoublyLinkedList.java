@@ -69,38 +69,24 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	}
 	//--------------------------------------------------------------------------
 	
-	
 	@Override
 	public boolean add(E obj) {
 		if(isEmpty()) {
-			Node<E> newnode = createNode(header,header,obj);
-			header.setNext(newnode);
-			header.setPrev(newnode);
-			currentSize++;
+			addBetween(obj,header,header);
 			return true;
 		}
-		return add( obj, header.getNext());
+		Node<E> current = header.getNext();
+		while( current != header) {
+			if(obj.compareTo(current.getData())  < 0) {
+				addBetween(obj,current.getPrev(), current);
+				return true;
+			}
+			current = current.getNext();
+		}
+		addBetween(obj,header.getPrev(),header);
+		return true;
 	}
-	//-----------------Private method for adding an object using recursion-----------------------------
-	private boolean add(E object, Node<E> node) {
-		if(node == header) {
-			Node<E> newnode = createNode(header,header.getPrev(),object);
-			header.getPrev().setNext(newnode);
-			header.setPrev(newnode);
-			currentSize++;
-			return true;
-		}
-		if(object.compareTo(node.getData()) <= 0) {
-			Node<E> nta = createNode(node,node.getPrev(),object);
-			node.getPrev().setNext(nta);
-			node.setPrev(nta);
-			currentSize++;
-			return true;
-		}
-		
-		return add(object,node.getNext());
-		//------------------------------------------------------------------------------------------------
-	}
+	
 	@Override
 	public int size() {
 		return currentSize;
@@ -361,6 +347,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	}
 	
 	//******************************************************************************
+	//--------------------------USEFUL PRIVATE METHODS-------------------------------------
 	/**
 	 * Returns a new Instance of a Node<E>.
 	 * @param n next node.
@@ -371,5 +358,16 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	private Node<E> createNode(Node<E> n,Node<E> p, E d){
 		return new Node<E>(n,p,d);
 	}
-	
+	/**
+	 * Add a new node between two given.
+	 * @param e element to add in the linked list.
+	 * @param predecessor node that will be before the new node
+	 * @param successor node that will be after the new node.
+	 */
+	private void addBetween(E e, Node<E> predecessor,Node<E> successor) {
+		Node<E> newNode = createNode(successor,predecessor,e);
+		predecessor.setNext(newNode);
+		successor.setPrev(newNode);
+		currentSize++;
+	}
 }
