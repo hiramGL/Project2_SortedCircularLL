@@ -1,5 +1,6 @@
 package edu.uprm.ece.icom4035.list;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -120,7 +121,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
 	@Override
 	public boolean remove(int index) {
-		// TODO Not implemented.
+
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException("index out of bounds");
 		int in = 0;
@@ -192,7 +193,9 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	@Override
 	public void clear() {
 		// TODO Not implemented.
-
+		ForwardNodeIterator iter = new ForwardNodeIterator();
+		while(iter.hasNext())
+			iter.next().clearNode();
 	}
 
 	@Override
@@ -238,7 +241,13 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	@Override
 	public Iterator<E> iterator(int index) {
 		// TODO Not implemented.
-		return null;
+		if(index < 0 || index >= size())
+			throw new IndexOutOfBoundsException("index is out of bounds");
+		ForwardNodeIterator niter = new ForwardNodeIterator();
+		ArrayList<E> arr = new ArrayList();
+		while(niter.hasNext())
+			arr.add(niter.next().getData());
+		return  arr.listIterator(index);
 	}
 	
 	@Override
