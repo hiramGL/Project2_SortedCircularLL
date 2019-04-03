@@ -5,12 +5,13 @@ import java.util.Iterator;
 public class ListTesterBasic {
 	public static void main(String[] args) {
 		SortedList<String> list = new SortedCircularDoublyLinkedList<String>();
-		list.add("a2");
-		list.add("b2");
-		list.add("a");
-		list.add("aa");
-		list.add("a1");
-		list.add("a3");
+		list.add("f5");
+		list.add("e4");
+		list.add("d3");
+		list.add("c2");
+		list.add("b1");
+		list.add("a0");
+		list.remove("a0");
 		printList("List is " , list);
 	
 	}

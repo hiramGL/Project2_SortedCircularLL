@@ -91,23 +91,15 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	public int size() {
 		return currentSize;
 	}
-
+	
 	@Override
 	public boolean remove(E obj) {
-		ForwardNodeIterator iter = new ForwardNodeIterator();
-		Node<E> current;
-	
-		while(iter.hasNext()) {
-			current = iter.next();
-			if(current.getData().compareTo(obj)== 0) {
-				Node<E> nbc = current.getPrev();
-				nbc.setNext(current.getNext());
-				current.getNext().setPrev(nbc);
-				current.clearNode();
-				currentSize--;
-				return true;
-			}
-			
+		if(isEmpty())
+			return false;
+		Node<E> ntr = getNode(obj);
+		if(ntr != null) {
+			remove(ntr);
+			return true;
 		}
 		return false;
 	}
@@ -364,10 +356,36 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	 * @param predecessor node that will be before the new node
 	 * @param successor node that will be after the new node.
 	 */
-	private void addBetween(E e, Node<E> predecessor,Node<E> successor) {
-		Node<E> newNode = createNode(successor,predecessor,e);
-		predecessor.setNext(newNode);
-		successor.setPrev(newNode);
+	private void addBetween(E e, Node<E> before,Node<E> after) {
+		Node<E> newNode = createNode(after,before,e);
+		before.setNext(newNode);
+		after.setPrev(newNode);
 		currentSize++;
+	}
+	/**
+	 * Removes the node given.
+	 * @param node node to remove.
+	 * @return element that was erased.
+	 */
+	private void remove(Node<E> node) {
+		Node<E> prev = node.getPrev();
+		Node<E> after = node.getNext();
+		prev.setNext(after);
+		after.setPrev(prev);
+		currentSize--;
+	}
+	/**
+	 * Returns the first node whose data is obj.
+	 * @param obj
+	 * @return
+	 */
+	private Node<E> getNode(E obj){
+		Node<E> ntr = header.getNext();
+		while(ntr!= header) {
+			if(ntr.getData().compareTo(obj) == 0)
+				return ntr;
+			ntr = ntr.getNext();
+		}
+		return null;
 	}
 }
