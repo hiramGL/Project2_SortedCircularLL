@@ -10,13 +10,13 @@ public class ListTesterBasic {
 		list.add("d3");
 		list.add("c2");
 		list.add("b1");
-		list.add("a0");
-		list.add("a0");
-		list.add("a0");
+		list.add("a3");
+		list.add("a2");
+		list.add("a1");
 		list.add("a0");
 		printList("List is " , list);
-		System.out.println(list.removeAll("a0"));
-		printList("list after remove all ", list);
+		
+		
 	}
 	
 	public static void printList(String msg,SortedList<String> l) {
