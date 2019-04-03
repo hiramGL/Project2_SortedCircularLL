@@ -6,8 +6,10 @@ import java.util.NoSuchElementException;
 
 
 /**
- * 
- * @author Hiram Garcia 
+ * Sorted circular list that use Nodes to linked between its elements. 
+ * It will always be sorted and only has reference to its header Node, 
+ * which its purpose is to have reference to the last and first element in list.
+ * @author Hiram Garcia Lopez
  *
  * @param <E>
  */
@@ -67,7 +69,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	}
 	//--------------------------------------------------------------------------
 	
-
+	
 	@Override
 	public boolean add(E obj) {
 		if(isEmpty()) {
@@ -88,7 +90,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 			currentSize++;
 			return true;
 		}
-		if(object.compareTo(node.getData()) < 0) {
+		if(object.compareTo(node.getData()) <= 0) {
 			Node<E> nta = createNode(node,node.getPrev(),object);
 			node.getPrev().setNext(nta);
 			node.setPrev(nta);
@@ -265,26 +267,23 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	
 	@Override
 	public ReverseIterator<E> reverseIterator() {
-		// TODO Not Implemented.
 		return new ReverseElementIterator();
 	}
 
 	@Override
 	public ReverseIterator<E> reverseIterator(int index) {
 		// TODO Not implemented.
-		if(index < 0 || index >= size())
-			throw new IndexOutOfBoundsException("index is out of bounds");
-		ArrayList<E> arr = new ArrayList<E>();
-		ReverseIterator riter = reverseIterator();
-		while(riter.hasPrevious())
-			arr.add( (E) riter.previous());
-		
 		return null;
 	}
-	//-----------------Implemented Iterators Classes---------------------------
+	//***********************IMPLEMENTED ITERATOR CLASSES********************************8
+	/**
+	 * Forward Iterator of Nodes in the Linked List.
+	 * @author Hiram Garcia Lopez
+	 *
+	 */
 	private class ForwardNodeIterator implements Iterator<Node<E>>{
 		Node<E> current = header.getNext();
-		Node<E> oldcurr;
+		Node<E> oldcurr;	//oldcurr: node to store the current value so the current can be change
 		@Override
 		public boolean hasNext() {
 			
@@ -300,6 +299,12 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 		
 	}
+	/**
+	 *  Forward Iterator of element in the linked list. 
+	 *  It use the Forward Iterator of Nodes as an object to access the data of each nodes.
+	 * @author Hiram Garcia Lopez 
+	 *
+	 */
 	private class ForwardIterator implements Iterator<E>{
 		ForwardNodeIterator fwdi = new ForwardNodeIterator();
 		@Override
@@ -314,19 +319,23 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 		
 	}
-
+	/**
+	 * Reverse Iterator of Nodes starting from last position in linked list.
+	 * @author Hiram Garcia Lopez
+	 *
+	 */
 	private class ReverseNodeIterator implements ReverseIterator<Node<E>>{
 		Node<E> current = header.getPrev();
 		Node<E> oldcurr;
+		
 		@Override
 		public boolean hasPrevious() {
 			
 			return current != header;
 		}
-
+		
 		@Override
 		public Node<E> previous() {
-			// TODO Auto-generated method stub
 			if(!hasPrevious())
 				throw new NoSuchElementException("No more elements");
 			oldcurr = current;
@@ -335,24 +344,23 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 		
 	}
+	/**
+	 * Reverse Iterator of elements. 
+	 * It uses the reverse iterator of nodes to access the data of each node.
+	 * @author Hiram Garcia Lopez 
+	 *
+	 */
 	private class ReverseElementIterator implements ReverseIterator<E>{
 		ReverseNodeIterator riter = new ReverseNodeIterator();
-		
 		public boolean hasPrevious() {
-			// TODO Auto-generated method stub
 			return riter.hasPrevious();
 		}
-
-		
 		public E previous() {
-			// TODO Auto-generated method stub
 			return riter.previous().getData();
 		}
-		
 	}
 	
-	//-------------------------------------------------------------------------
-	//-----------------------------------------------------------------------
+	//******************************************************************************
 	/**
 	 * Returns a new Instance of a Node<E>.
 	 * @param n next node.
