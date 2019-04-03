@@ -215,22 +215,35 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		return null;
 	}
 	//-----------------Implemented Iterators Classes---------------------------
-	private class ForwardIterator<E> implements Iterator<E>{
-		Node<E> current = (Node<E>) header.getNext();
+	private class ForwardNodeIterator implements Iterator<Node<E>>{
+		Node<E> current = header.getNext();
+		Node<E> oldcurr;
 		@Override
 		public boolean hasNext() {
-			// TODO Auto-generated method stub
+			
 			return current != header;
 		}
-
+		@Override
+		public Node<E> next() {
+			if(!hasNext())
+				throw new NoSuchElementException("no more element");
+			oldcurr = current;
+			current = current.getNext();
+			return oldcurr;
+		}
+		
+	}
+	private class ForwardIterator implements Iterator<E>{
+		ForwardNodeIterator fwdi = new ForwardNodeIterator();
+		@Override
+		public boolean hasNext() {
+			return fwdi.hasNext();
+		}
 		@Override
 		public E next() throws NoSuchElementException {
-			// TODO Auto-generated method stub
 			if(!hasNext()) 
 				throw new NoSuchElementException("no next element.");
-			Node<E> oldcurrent = current;
-			current = current.getNext();
-			return oldcurrent.getData();
+			return fwdi.next().getData();
 		}
 		
 	}
