@@ -12,8 +12,9 @@ public class ListTesterBasic {
 		list.add("e4");
 		list.add("f5");
 		list.add("g6");
-		
-		
+		System.out.println(list.remove(6));
+		printList("List is " , list);
+		printReverseList("List in reverse order is ", list);
 	}
 	
 	public static void printList(String msg,SortedList<String> l) {
@@ -24,4 +25,12 @@ public class ListTesterBasic {
 		System.out.println("size is: " + l.size());
 	}
 	
+	public static void printReverseList(String msg, SortedList<String> l) {
+		System.out.println(msg);
+		ReverseIterator iter = l.reverseIterator();
+		while(iter.hasPrevious()) {
+			System.out.println(iter.previous());
+		}
+	}
+	 
 }

@@ -5,7 +5,12 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
-
+/**
+ * 
+ * @author Hiram Garcia 
+ *
+ * @param <E>
+ */
 public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements SortedList<E> {
 	//--------------------------INNER CLASS NODE--------------------------------
 	/**
@@ -194,8 +199,12 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	public void clear() {
 		// TODO Not implemented.
 		ForwardNodeIterator iter = new ForwardNodeIterator();
-		while(iter.hasNext())
+		while(iter.hasNext()) {
 			iter.next().clearNode();
+			currentSize--;
+		}
+		header.setNext(header);
+		header.setPrev(header);
 	}
 
 	@Override
@@ -243,7 +252,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException("index is out of bounds");
 		ForwardNodeIterator niter = new ForwardNodeIterator();
-		ArrayList<E> arr = new ArrayList();
+		ArrayList<E> arr = new ArrayList<E>();
 		while(niter.hasNext())
 			arr.add(niter.next().getData());
 		return  arr.listIterator(index);
@@ -257,12 +266,19 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	@Override
 	public ReverseIterator<E> reverseIterator() {
 		// TODO Not Implemented.
-		return null;
+		return new ReverseElementIterator();
 	}
 
 	@Override
 	public ReverseIterator<E> reverseIterator(int index) {
 		// TODO Not implemented.
+		if(index < 0 || index >= size())
+			throw new IndexOutOfBoundsException("index is out of bounds");
+		ArrayList<E> arr = new ArrayList<E>();
+		ReverseIterator riter = reverseIterator();
+		while(riter.hasPrevious())
+			arr.add( (E) riter.previous());
+		
 		return null;
 	}
 	//-----------------Implemented Iterators Classes---------------------------
@@ -299,21 +315,42 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		
 	}
 
-	private class ReverseNodeIterator implements ReverseIterator<E>{
-
+	private class ReverseNodeIterator implements ReverseIterator<Node<E>>{
+		Node<E> current = header.getPrev();
+		Node<E> oldcurr;
 		@Override
 		public boolean hasPrevious() {
-			// TODO Auto-generated method stub
-			return false;
+			
+			return current != header;
 		}
 
 		@Override
-		public E previous() {
+		public Node<E> previous() {
 			// TODO Auto-generated method stub
-			return null;
+			if(!hasPrevious())
+				throw new NoSuchElementException("No more elements");
+			oldcurr = current;
+			current = current.getPrev();
+			return oldcurr;
 		}
 		
 	}
+	private class ReverseElementIterator implements ReverseIterator<E>{
+		ReverseNodeIterator riter = new ReverseNodeIterator();
+		
+		public boolean hasPrevious() {
+			// TODO Auto-generated method stub
+			return riter.hasPrevious();
+		}
+
+		
+		public E previous() {
+			// TODO Auto-generated method stub
+			return riter.previous().getData();
+		}
+		
+	}
+	
 	//-------------------------------------------------------------------------
 	//-----------------------------------------------------------------------
 	/**
