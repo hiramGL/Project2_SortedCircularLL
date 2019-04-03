@@ -73,6 +73,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 		return add( obj, header.getNext());
 	}
+	//-----------------Private method for adding an object using recursion-----------------------------
 	private boolean add(E object, Node<E> node) {
 		if(node == header) {
 			Node<E> newnode = createNode(header,header.getPrev(),object);
@@ -90,7 +91,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 		
 		return add(object,node.getNext());
-		
+		//------------------------------------------------------------------------------------------------
 	}
 	@Override
 	public int size() {
@@ -144,7 +145,11 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
 	@Override
 	public boolean contains(E e) {
-		// TODO Not implemented.
+		
+		Iterator<E> iter = iterator();
+		while(iter.hasNext())
+			if(iter.next().compareTo(e) == 0)
+				return true;
 		return false;
 	}
 
@@ -208,6 +213,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 		
 	}
+
 	//-------------------------------------------------------------------------
 	//-----------------------------------------------------------------------
 	/**
