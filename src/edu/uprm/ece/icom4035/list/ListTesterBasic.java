@@ -11,7 +11,7 @@ public class ListTesterBasic {
 		list.add("c2");
 		list.add("b1");
 		list.add("a0");
-		list.remove("a0");
+		
 		printList("List is " , list);
 	
 	}

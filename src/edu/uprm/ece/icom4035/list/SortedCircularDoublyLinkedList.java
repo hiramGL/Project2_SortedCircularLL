@@ -103,25 +103,15 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean remove(int index) {
-
+		
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException("index out of bounds");
-		int in = 0;
-		ForwardNodeIterator iter = new ForwardNodeIterator();
-		Node<E> current = iter.next();
-		while(in < index) {
-			current = iter.next();
-			in++;
-		}
-		Node<E> ndc = current.getPrev();
-		ndc.setNext(current.getNext());
-		current.getNext().setPrev(ndc);
-		current.clearNode();
-		currentSize--;
 		
+		Node<E> ntr = getNode(index);
+		remove(ntr);
 		return true;
 	}
 
@@ -387,5 +377,19 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 			ntr = ntr.getNext();
 		}
 		return null;
+	}
+	/**
+	 * Get the node at the index given.
+	 * @param index index of node to get.
+	 * @return node.
+	 */
+	private Node<E> getNode(int index){
+		int counter = 0;
+		Node<E> ntr = header.getNext();
+		while(counter < index) {
+			ntr = ntr.getNext();
+			counter++;
+		}
+		return ntr;
 	}
 }
