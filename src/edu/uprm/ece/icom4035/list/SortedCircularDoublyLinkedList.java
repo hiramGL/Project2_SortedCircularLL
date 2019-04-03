@@ -119,7 +119,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	public int removeAll(E obj) {
 		int occurrences = 0;
 		Node<E> ntr = getNode(obj);
-		
 		while(ntr != null) {
 			remove(ntr);
 			occurrences++;
@@ -147,14 +146,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	public E get(int index) {
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException("Index is out of bounds");
-		Iterator<E> iter = iterator();
-		E current = iter.next();
-		int ind = 0;
-		while(ind < index) {
-			current = iter.next();
-			ind++;
-		}
-		return current;
+		return getNode(index).getData();
 	}
 
 	@Override

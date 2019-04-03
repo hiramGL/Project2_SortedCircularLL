@@ -15,7 +15,7 @@ public class ListTesterBasic {
 		list.add("a1");
 		list.add("a0");
 		printList("List is " , list);
-		
+		System.out.println(list.get(4));
 		
 	}
 	
