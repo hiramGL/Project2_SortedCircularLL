@@ -240,7 +240,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	//-------------------------ITERATOR METHODS and Classes------------------------------
 	@Override
 	public Iterator<E> iterator(int index) {
-		// TODO Not implemented.
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException("index is out of bounds");
 		ForwardNodeIterator niter = new ForwardNodeIterator();
@@ -252,7 +251,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	
 	@Override
 	public Iterator<E> iterator() {
-		// TODO Not Implemented.
 		return new ForwardIterator();
 	}
 	
@@ -301,6 +299,21 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		
 	}
 
+	private class ReverseNodeIterator implements ReverseIterator<E>{
+
+		@Override
+		public boolean hasPrevious() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public E previous() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+		
+	}
 	//-------------------------------------------------------------------------
 	//-----------------------------------------------------------------------
 	/**
