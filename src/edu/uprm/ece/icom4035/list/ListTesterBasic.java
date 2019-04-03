@@ -17,8 +17,7 @@ public class ListTesterBasic {
 		list.add("aaron");
 		list.add("cable");
 		printList("list is: ",list);
-		System.out.println(list.firstIndex("aaron"));
-		System.out.println(list.lastIndex("aaron"));
+		System.out.println(list.get(11));
 		
 	}
 	

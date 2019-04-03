@@ -133,14 +133,22 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
 	@Override
 	public E get(int index) {
-		// TODO Not Implemented.
-		return null;
+		if(index < 0 || index >= size())
+			throw new IndexOutOfBoundsException("Index is out of bounds");
+		Iterator<E> iter = iterator();
+		E current = iter.next();
+		int ind = 0;
+		while(ind < index) {
+			current = iter.next();
+			ind++;
+		}
+		return current;
 	}
 
 	@Override
 	public void clear() {
 		// TODO Not implemented.
-		
+
 	}
 
 	@Override
