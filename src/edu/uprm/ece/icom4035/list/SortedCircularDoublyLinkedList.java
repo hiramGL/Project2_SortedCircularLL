@@ -47,6 +47,10 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 			data = null;
 		}
 		
+		public String toString() {
+			String s= ""+ data;
+			return s;
+		}
 	}//-------------------------END OF INNER CLASS NODE------------------------- 
 	
 	//-------------------Instance variables and constructors-------------------------------------
@@ -60,13 +64,36 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
 	@Override
 	public boolean add(E obj) {
-		// TODO Not implemented.
-		return false;
+		if(isEmpty()) {
+			Node<E> newnode = createNode(header,header,obj);
+			header.setNext(newnode);
+			header.setPrev(newnode);
+			currentSize++;
+			return true;
+		}
+		return add( obj, header.getNext());
 	}
-
+	private boolean add(E object, Node<E> node) {
+		if(node == header) {
+			Node<E> newnode = createNode(header,header.getPrev(),object);
+			header.getPrev().setNext(newnode);
+			header.setPrev(newnode);
+			currentSize++;
+			return true;
+		}
+		if(object.compareTo(node.getData()) < 0) {
+			Node<E> nta = createNode(node,node.getPrev(),object);
+			node.getPrev().setNext(nta);
+			node.setPrev(nta);
+			currentSize++;
+			return true;
+		}
+		
+		return add(object,node.getNext());
+		
+	}
 	@Override
 	public int size() {
-		// TODO Not Implemented.
 		return currentSize;
 	}
 
@@ -137,7 +164,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	public boolean isEmpty() {
 		return currentSize ==0;
 	}
-	//-------------------------ITERATOR METHODS------------------------------
+	//-------------------------ITERATOR METHODS and Classes------------------------------
 	@Override
 	public Iterator<E> iterator(int index) {
 		// TODO Not implemented.
@@ -147,7 +174,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	@Override
 	public Iterator<E> iterator() {
 		// TODO Not Implemented.
-		return null;
+		return new ForwardIterator();
 	}
 	
 	@Override
@@ -161,6 +188,27 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		// TODO Not implemented.
 		return null;
 	}
+	//-----------------Implemented Iterators Classes---------------------------
+	private class ForwardIterator<E> implements Iterator<E>{
+		Node<E> current = (Node<E>) header.getNext();
+		@Override
+		public boolean hasNext() {
+			// TODO Auto-generated method stub
+			return current != header;
+		}
+
+		@Override
+		public E next() throws NoSuchElementException {
+			// TODO Auto-generated method stub
+			if(!hasNext()) 
+				throw new NoSuchElementException("no next element.");
+			Node<E> oldcurrent = current;
+			current = current.getNext();
+			return oldcurrent.getData();
+		}
+		
+	}
+	//-------------------------------------------------------------------------
 	//-----------------------------------------------------------------------
 	/**
 	 * Returns a new Instance of a Node<E>.
