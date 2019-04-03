@@ -155,14 +155,27 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
 	@Override
 	public int firstIndex(E e) {
-		// TODO Not implemented.
-		return 0;
+		int index = 0;
+		Iterator<E> iter = iterator();
+		while(iter.hasNext()) {
+			if(iter.next().compareTo(e)==0)
+				return index;
+			index++;
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndex(E e) {
-		// TODO Not implemented.
-		return 0;
+		int index = -1;
+		int currindex = 0;
+		Iterator<E> iter = iterator();
+		while(iter.hasNext()) {
+			if(iter.next().compareTo(e) == 0)
+				index = currindex;
+			currindex++;
+		}
+		return index;
 	}
 	
 	@Override

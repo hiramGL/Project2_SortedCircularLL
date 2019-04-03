@@ -14,8 +14,11 @@ public class ListTesterBasic {
 		list.add("battlefield4");
 		list.add("aaron");
 		list.add("cable");
+		list.add("aaron");
+		list.add("cable");
 		printList("list is: ",list);
-		System.out.println(list.contains("cable"));
+		System.out.println(list.firstIndex("aaron"));
+		System.out.println(list.lastIndex("aaron"));
 		
 	}
 	
