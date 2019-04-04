@@ -15,7 +15,8 @@ public class ListTesterBasic {
 		list.add("aa");
 		list.add("a0");
 		printList("List is " , list);
-		System.out.println(list.lastIndex("af"));
+		list.clear();
+		printList("list after clear ",list);
 		
 	}
 	

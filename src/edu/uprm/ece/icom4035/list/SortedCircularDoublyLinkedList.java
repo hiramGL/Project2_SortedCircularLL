@@ -150,7 +150,11 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 
 	@Override
 	public void clear() {
-		// TODO Not implemented.
+		ForwardNodeIterator iter = new ForwardNodeIterator();
+		while(iter.hasNext()) {
+			iter.next();
+			iter.remove();
+		}
 	}
 
 	@Override
@@ -209,22 +213,27 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	 *
 	 */
 	private class ForwardNodeIterator implements Iterator<Node<E>>{
-		Node<E> current = header.getNext();
-		Node<E> oldcurr;	//oldcurr: node to store the current value so the current can be change
-		private boolean removable = false;
+		Node<E> cursor = header.getNext();
+		Node<E> recent = null;	//recent: node of last reported element.
 		@Override
 		public boolean hasNext() {
 			
-			return current != header;
+			return cursor != header;
 		}
 		@Override
 		public Node<E> next() {
 			if(!hasNext())
 				throw new NoSuchElementException("no more element");
-			oldcurr = current;
-			current = current.getNext();
-			removable = true;
-			return oldcurr;
+			recent = cursor;
+			cursor = cursor.getNext();
+			return recent;
+		}
+		@Override
+		public void remove() {
+			if(recent == null)
+				throw new IllegalStateException(" nothing to remove");
+			SortedCircularDoublyLinkedList.this.remove(recent.getData());
+			recent = null;
 		}
 	}
 	/**
@@ -244,6 +253,10 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 			if(!hasNext()) 
 				throw new NoSuchElementException("no next element.");
 			return fwdi.next().getData();
+		}
+		
+		public void remove() {
+			fwdi.remove();
 		}
 		
 	}
