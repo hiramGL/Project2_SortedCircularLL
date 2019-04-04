@@ -184,11 +184,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	public Iterator<E> iterator(int index) {
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException("index is out of bounds");
-		ForwardNodeIterator niter = new ForwardNodeIterator();
-		ArrayList<E> arr = new ArrayList<E>();
-		while(niter.hasNext())
-			arr.add(niter.next().getData());
-		return  arr.listIterator(index);
+		return new ForwardIterator(index);
 	}
 	
 	@Override
@@ -206,7 +202,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		// TODO Not implemented.
 		return null;
 	}
-	//***********************IMPLEMENTED ITERATOR CLASSES********************************8
+	//***********************IMPLEMENTED ITERATOR CLASSES********************************
 	/**
 	 * Forward Iterator of Nodes in the Linked List.
 	 * @author Hiram Garcia Lopez
@@ -215,7 +211,16 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	private class ForwardNodeIterator implements Iterator<Node<E>>{
 		Node<E> cursor = header.getNext();
 		Node<E> recent = null;	//recent: node of last reported element.
+		int index;
+		public ForwardNodeIterator() {
+			index =0;
+		}
+		public ForwardNodeIterator(int i) {
+			index =i;
+			prepareIter();
+		}
 		@Override
+		
 		public boolean hasNext() {
 			
 			return cursor != header;
@@ -235,6 +240,14 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 			SortedCircularDoublyLinkedList.this.remove(recent.getData());
 			recent = null;
 		}
+		
+		private void  prepareIter() {
+			int counter = 0;
+			while(counter< index){
+				cursor = cursor.getNext();
+				counter++;
+			}
+		}
 	}
 	/**
 	 *  Forward Iterator of element in the linked list. 
@@ -244,6 +257,13 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	 */
 	private class ForwardIterator implements Iterator<E>{
 		ForwardNodeIterator fwdi = new ForwardNodeIterator();
+		int index;
+		public ForwardIterator() {
+			fwdi =  new ForwardNodeIterator();
+		}
+		public ForwardIterator(int i) {
+			fwdi =  new ForwardNodeIterator(i);
+		}
 		@Override
 		public boolean hasNext() {
 			return fwdi.hasNext();
@@ -258,7 +278,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		public void remove() {
 			fwdi.remove();
 		}
-		
+	
 	}
 	/**
 	 * Reverse Iterator of Nodes starting from last position in linked list.

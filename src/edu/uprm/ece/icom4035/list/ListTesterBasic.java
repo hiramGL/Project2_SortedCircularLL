@@ -11,13 +11,9 @@ public class ListTesterBasic {
 		list.add("c2");
 		list.add("b1");
 		list.add("a0");
-		list.add("a2");
-		list.add("aa");
-		list.add("a0");
 		printList("List is " , list);
-		list.clear();
-		printList("list after clear ",list);
-		
+
+		printForwardIterator("forward iterator from positon 2 is ",list);
 	}
 	
 	public static void printList(String msg,SortedList<String> l) {
@@ -27,7 +23,12 @@ public class ListTesterBasic {
 		}
 		System.out.println("size is: " + l.size());
 	}
-	
+	public static void printForwardIterator(String msg, SortedList<String> l) {
+		System.out.println(msg);
+		Iterator<String> fwdi = l.iterator(2);
+		while(fwdi.hasNext())
+			System.out.println(fwdi.next());
+	}
 	public static void printReverseList(String msg, SortedList<String> l) {
 		System.out.println(msg);
 		ReverseIterator<String> iter = l.reverseIterator();
