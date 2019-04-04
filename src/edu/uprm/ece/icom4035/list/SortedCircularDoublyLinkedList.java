@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  * which its purpose is to have reference to the last and first element in list.
  * @author Hiram Garcia Lopez
  *
- * @param <E>
+ * @param <E> I assume that element of type E is a comparable object.
  */
 public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements SortedList<E> {
 	//--------------------------INNER CLASS NODE--------------------------------
@@ -65,14 +65,16 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	Node<E> header;
 	int currentSize = 0;
 	public SortedCircularDoublyLinkedList() {
-		header = createNode(header,header,null);
+		header = createNode(null,null,null);
+		header.setNext(header);
+		header.setPrev(header);
 	}
 	//--------------------------------------------------------------------------
 	
 	@Override
 	public boolean add(E obj) {
 		if(isEmpty()) {
-			addBetween(obj,header,header);
+			addBetween(obj,header,header.getNext());
 			return true;
 		}
 		Node<E> current = header.getNext();
