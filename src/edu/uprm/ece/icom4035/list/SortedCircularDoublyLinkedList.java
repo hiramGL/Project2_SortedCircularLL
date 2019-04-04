@@ -109,7 +109,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException("index out of bounds");
-		
 		Node<E> ntr = getNode(index);
 		remove(ntr);
 		return true;
@@ -152,48 +151,24 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	@Override
 	public void clear() {
 		// TODO Not implemented.
-		ForwardNodeIterator iter = new ForwardNodeIterator();
-		while(iter.hasNext()) {
-			iter.next().clearNode();
-			currentSize--;
-		}
-		header.setNext(header);
-		header.setPrev(header);
 	}
 
 	@Override
 	public boolean contains(E e) {
-		
-		Iterator<E> iter = iterator();
-		while(iter.hasNext())
-			if(iter.next().compareTo(e) == 0)
-				return true;
+		Node<E> node = getNode(e);
+		if(node!= null)
+			return true;
 		return false;
 	}
 
 	@Override
 	public int firstIndex(E e) {
-		int index = 0;
-		Iterator<E> iter = iterator();
-		while(iter.hasNext()) {
-			if(iter.next().compareTo(e)==0)
-				return index;
-			index++;
-		}
-		return -1;
+		return getFirstIndexOfNode(e);
 	}
 
 	@Override
 	public int lastIndex(E e) {
-		int index = -1;
-		int currindex = 0;
-		Iterator<E> iter = iterator();
-		while(iter.hasNext()) {
-			if(iter.next().compareTo(e) == 0)
-				index = currindex;
-			currindex++;
-		}
-		return index;
+		return getLastIndexOfNode(e);
 	}
 	
 	@Override
@@ -236,6 +211,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	private class ForwardNodeIterator implements Iterator<Node<E>>{
 		Node<E> current = header.getNext();
 		Node<E> oldcurr;	//oldcurr: node to store the current value so the current can be change
+		private boolean removable = false;
 		@Override
 		public boolean hasNext() {
 			
@@ -247,9 +223,9 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 				throw new NoSuchElementException("no more element");
 			oldcurr = current;
 			current = current.getNext();
+			removable = true;
 			return oldcurr;
 		}
-		
 	}
 	/**
 	 *  Forward Iterator of element in the linked list. 
@@ -319,7 +295,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	 * @param n next node.
 	 * @param p previous node.
 	 * @param d data. 
-	 * @return new Instance.
+	 * @return new Instance of a node. 
 	 */
 	private Node<E> createNode(Node<E> n,Node<E> p, E d){
 		return new Node<E>(n,p,d);
@@ -349,9 +325,42 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		currentSize--;
 	}
 	/**
-	 * Returns the first node whose data is obj.
+	 * Get the first index of the node with obj as data.
+	 * @param obj 
+	 * @return index of obj or -1 if not found.
+	 */
+	private int getFirstIndexOfNode(E obj) {
+		int index = 0;
+		Node<E> ntf = header.getNext();
+		while(ntf!= header) {
+			if(ntf.getData().compareTo(obj) == 0)
+				return index;
+			ntf = ntf.getNext();
+			index++;
+		}
+		return -1;
+	}
+	/**
+	 * Get the last index of the node with obj as data.
 	 * @param obj
-	 * @return
+	 * @return index of obj or -1 if not found.
+	 */
+	private int getLastIndexOfNode(E obj) {
+		
+		int index = size()-1;
+		Node<E> ntf = header.getPrev();
+		while(ntf != header){
+			if(ntf.getData().compareTo(obj)== 0)
+				return index;
+			index--;
+			ntf = ntf.getPrev();
+		}
+		return -1;
+	}
+	/**
+	 * Returns the first node whose data is obj. 
+	 * @param obj
+	 * @return first node of obj, or null if not found.
 	 */
 	private Node<E> getNode(E obj){
 		Node<E> ntr = header.getNext();
