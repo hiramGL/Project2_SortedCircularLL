@@ -109,6 +109,8 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		
 		if(index < 0 || index >= size())
 			throw new IndexOutOfBoundsException("index out of bounds");
+		if(isEmpty())
+			return false;
 		Node<E> ntr = getNode(index);
 		remove(ntr);
 		return true;
@@ -200,7 +202,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	@Override
 	public ReverseIterator<E> reverseIterator(int index) {
 		// TODO Not implemented.
-		return null;
+		return new ReverseElementIterator(index);
 	}
 	//***********************IMPLEMENTED ITERATOR CLASSES********************************
 	/**
@@ -209,9 +211,9 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	 *
 	 */
 	private class ForwardNodeIterator implements Iterator<Node<E>>{
-		Node<E> cursor = header.getNext();
-		Node<E> recent = null;	//recent: node of last reported element.
-		int index;
+		private Node<E> cursor = header.getNext();
+		private Node<E> recent = null;	//recent: node of last reported element.
+		private int index;
 		public ForwardNodeIterator() {
 			index =0;
 		}
@@ -220,9 +222,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 			prepareIter();
 		}
 		@Override
-		
 		public boolean hasNext() {
-			
 			return cursor != header;
 		}
 		@Override
@@ -249,6 +249,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 			}
 		}
 	}
+	
 	/**
 	 *  Forward Iterator of element in the linked list. 
 	 *  It use the Forward Iterator of Nodes as an object to access the data of each nodes.
@@ -270,8 +271,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 		@Override
 		public E next() throws NoSuchElementException {
-			if(!hasNext()) 
-				throw new NoSuchElementException("no next element.");
 			return fwdi.next().getData();
 		}
 		
@@ -280,30 +279,43 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 	
 	}
+	
 	/**
 	 * Reverse Iterator of Nodes starting from last position in linked list.
 	 * @author Hiram Garcia Lopez
 	 *
 	 */
 	private class ReverseNodeIterator implements ReverseIterator<Node<E>>{
-		Node<E> current = header.getPrev();
-		Node<E> oldcurr;
-		
+		private Node<E> cursor = header.getPrev();
+		private Node<E> recent = null;
+		private int  index;
+		public ReverseNodeIterator() {
+			index = 0;
+		}
+		public ReverseNodeIterator(int i) {
+			index = i;
+			prepareIter();
+		}
 		@Override
 		public boolean hasPrevious() {
-			
-			return current != header;
+			return cursor != header;
 		}
-		
+	
 		@Override
 		public Node<E> previous() {
 			if(!hasPrevious())
 				throw new NoSuchElementException("No more elements");
-			oldcurr = current;
-			current = current.getPrev();
-			return oldcurr;
+			recent = cursor;
+			cursor = cursor.getPrev();
+			return recent;
 		}
-		
+		private void prepareIter() {
+			int counter = size() - 1;
+			while(counter > index) {
+				cursor = cursor.getPrev();
+				counter--;
+		}
+		}
 	}
 	/**
 	 * Reverse Iterator of elements. 
@@ -312,7 +324,13 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	 *
 	 */
 	private class ReverseElementIterator implements ReverseIterator<E>{
-		ReverseNodeIterator riter = new ReverseNodeIterator();
+		ReverseNodeIterator riter;
+		public ReverseElementIterator() {
+			riter = new ReverseNodeIterator();
+		}
+		public ReverseElementIterator(int index) {
+			riter = new ReverseNodeIterator(index);
+		}
 		public boolean hasPrevious() {
 			return riter.hasPrevious();
 		}
