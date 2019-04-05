@@ -49,13 +49,41 @@ public class ListTesterBasic {
 		printList("List is:",list);
 		
 		list.add("b0");
-		System.out.println("Testing the first index of b0:" + list.firstIndex("b0"));
+		System.out.println("\nTesting the first index of b0:" + list.firstIndex("b0"));
 		System.out.println("Testing the last index of b0:" + list.lastIndex("b0"));
 		
 		list.clear();
-		printList("Testing clear method:\nList after clear is: ",list);
+		printList("\nTesting clear method:\nList after clear is: ",list);
+		
+		list.add("a0");
+		list.add("b1");
+		list.add("c2");
+		list.add("d3");
+		list.add("e4");
+		list.add("f5");
+		System.out.println("Testing iterator()");
+		Iterator<String> iter = list.iterator();
+		while(iter.hasNext())
+			System.out.println(iter.next());
+		
+		System.out.println("\ntesting iterator(index)");
+		iter = list.iterator(2);
+		
+		while(iter.hasNext())
+			System.out.println(iter.next());
+		
+		ReverseIterator<String> iter2 = list.reverseIterator();
+		System.out.println("\nTesting reverse iterator()");
+		while(iter2.hasPrevious())
+			System.out.println(iter2.previous());
+		
+		System.out.println("Testing reverse iterator(index)");
+		iter2 = list.reverseIterator(3);
+		while(iter2.hasPrevious())
+			System.out.println(iter2.previous());
+		
 	}
-	
+		
 	public static void printList(String msg,SortedList<String> l) {
 		System.out.println(msg);
 		for(String s: l) {

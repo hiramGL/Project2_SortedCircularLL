@@ -96,8 +96,6 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	
 	@Override
 	public boolean remove(E obj) {
-		if(isEmpty())
-			return false;
 		Node<E> ntr = getNode(obj);
 		if(ntr != null) {
 			remove(ntr);
