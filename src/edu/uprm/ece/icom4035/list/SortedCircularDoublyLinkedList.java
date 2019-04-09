@@ -213,7 +213,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		private Node<E> cursor = header.getNext();
 		private Node<E> recent = null;	//recent: node of last reported element.
 		private Node<E> first = header;
-		private int lindex = 0;
+		private int lindex = 0; //variable for determine if we arrive at the node specified by parameter index.
 		private int index;
 		public ForwardNodeIterator() {
 			index =0;
@@ -295,9 +295,12 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 	private class ReverseNodeIterator implements ReverseIterator<Node<E>>{
 		private Node<E> cursor = header.getPrev();
 		private Node<E> recent = null;
+		private Node<E> first = header;
+		private int lindex = 0;	//variable for determine if we arrive at the node specified by parameter index.
 		private int  index;
 		public ReverseNodeIterator() {
 			index = 0;
+			lindex = size();
 		}
 		public ReverseNodeIterator(int i) {
 			index = i;
@@ -305,7 +308,7 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 		}
 		@Override
 		public boolean hasPrevious() {
-			return cursor != header;
+			return cursor != first || lindex < size();
 		}
 	
 		@Override
@@ -314,6 +317,9 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 				throw new NoSuchElementException("No more elements");
 			recent = cursor;
 			cursor = cursor.getPrev();
+			if(cursor == header && lindex < size())
+				cursor = cursor.getPrev();
+			lindex++;
 			return recent;
 		}
 		private void prepareIter() {
@@ -321,7 +327,8 @@ public class SortedCircularDoublyLinkedList<E extends Comparable<E>> implements 
 			while(counter > index) {
 				cursor = cursor.getPrev();
 				counter--;
-		}
+			}
+			first = cursor;
 		}
 	}
 	/**
