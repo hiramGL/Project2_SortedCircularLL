@@ -68,19 +68,19 @@ public class ListTesterBasic {
 		
 		System.out.println("\ntesting iterator(index)");
 		iter = list.iterator(2);
-		
 		while(iter.hasNext())
 			System.out.println(iter.next());
-		
-		ReverseIterator<String> iter2 = list.reverseIterator();
-		System.out.println("\nTesting reverse iterator()");
-		while(iter2.hasPrevious())
-			System.out.println(iter2.previous());
-		
-		System.out.println("Testing reverse iterator(index)");
-		iter2 = list.reverseIterator(3);
-		while(iter2.hasPrevious())
-			System.out.println(iter2.previous());
+//		
+//		ReverseIterator<String> iter2 = list.reverseIterator();
+//		System.out.println("\nTesting reverse iterator()");
+//		while(iter2.hasPrevious())
+//			System.out.println(iter2.previous());
+//		
+//		ReverseIterator<String> iter2 = list.reverseIterator();
+//		System.out.println("Testing reverse iterator(index)");
+//		iter2 = list.reverseIterator(3);
+//		while(iter2.hasPrevious())
+//			System.out.println(iter2.previous());
 		
 	}
 		
